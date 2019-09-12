@@ -134,13 +134,7 @@ module SeasonableHelper
       shortened_season = season[0..3]
       shortened_season.to_i
     end
-
-    def shots_helper(season) #ALL Teams. Hash. Key = Team_id, Value = shots
-    end
-
-    def goals_helper(season) #ALL Teams. Hash. Key = Team_id, Value = goals
-    end
-
+    
     def tackles_helper(season) #ALL Teams. Hash. Key = Team_id, Value = tackles
       total_tackles = Hash.new(0)
       game_season = season_converter(season)
