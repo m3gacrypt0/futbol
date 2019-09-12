@@ -1,7 +1,6 @@
 require 'pry'
 module Seasonable
 
-  # Name of the team with the biggest decrease between regular season and postseason win percentage.	Return: String
   # BB (Complete)
   def biggest_bust(season)
     teams_reg_season_win_percentage = Hash.new(0)
@@ -35,12 +34,10 @@ module Seasonable
     end
 
     team_with_biggest_diff = teams_differences.max_by {|k,v| v }
-
     team_name_finder_helper(team_with_biggest_diff[0])
 
   end
 
-  # Name of the team with the biggest increase between regular season and postseason win percentage.	Return: String
   # BB (Complete)
   def biggest_surprise(season)
     teams_reg_season_win_percentage = Hash.new(0)
@@ -78,7 +75,6 @@ module Seasonable
     team_name_finder_helper(team_with_lowest_diff[0])
   end
 
-  # Name of the Coach with the best win percentage for the season. Return:	String
   # JP (complete)
   def winningest_coach(season)
     coach_win_percentage_hash = coach_win_percentage_helper(season)
@@ -94,7 +90,6 @@ module Seasonable
     best_coach
   end
 
-  # Name of the Coach with the worst win percentage for the season. Return:	String
   # JP (complete)
   def worst_coach(season)
     coach_win_percentage_hash = coach_win_percentage_helper(season)
@@ -110,27 +105,24 @@ module Seasonable
     worst_coach
   end
 
-  # Name of the Team with the best ratio of shots to goals for the season. Return:	String
   # AM
   def most_accurate_team(season)
-
     agg_data = Hash.new(0)
-
-    # require 'pry' ; binding.pry
       self.teams.each_pair do |team_id, _|
         agg_data[team_id] = all_shots_season(team_id, season)
       end
-    # binding.pry
     team_name_finder_helper(agg_data.max_by {|_, v| v}[0])
   end
 
-  # Name of the Team with the worst ratio of shots to goals for the season. Return:	String
   # AM
   def least_accurate_team(season)
-    # code goes here!
+        agg_data = Hash.new(0)
+          self.teams.each_pair do |team_id, _|
+            agg_data[team_id] = all_shots_season(team_id, season)
+          end
+        team_name_finder_helper(agg_data.min_by {|_, v| v}[0])
   end
 
-  # Name of the Team with the most tackles in the season. Return:	String
   # JP
   def most_tackles(season)
     total_tackles = tackles_helper(season)
@@ -146,7 +138,6 @@ module Seasonable
     team_name_finder_helper(best_team.to_s)
   end
 
-  # Name of the Team with the fewest tackles in the season. Return:	String
   # JP
   def fewest_tackles(season)
     total_tackles = tackles_helper(season)
@@ -216,68 +207,26 @@ module Seasonable
 
     all_shots = 0
     all_goals = 0
-    game_array = []
-
-    self.games.each_value do |game|
-      if (game.season == season) && ((game.home_team_id == team_id) || (game.away_team_id == team_id))
-        game_array << game
+      self.games.each_value do |game|
+        if (game.season == season) && ((game.home_team_id == team_id) || (game.away_team_id == team_id))
+            row = self.game_teams.select do |game_team|
+              ((game_team.game_id == game.game_id) &&
+              (game_team.team_id.to_s == team_id))
+            end
+            if row[0] != nil
+              all_shots += row[0].shots
+              all_goals += row[0].goals
+            end
+        end
       end
-    end
 
-    # game_array = game_array.uniq
-# binding.pry
-    game_array.each do |game|
-      # binding.pry
-      row = self.game_teams.find_all do |game_team|
-        (game_team.game_id == game.game_id)# && (game_team.team_id == team_id))
-      end
-      row = row.find {|game_team| game_team.team_id == team_id}
-
-        # binding.pry
-      # end
-      # binding.pry
-      if row != nil
-        require 'pry'; binding.pry
-        all_shots += row[0].shots
-        all_goals += row[0].goals
-      end
-    end
     [all_shots, all_goals]
 
     if (all_shots > 0) && (all_goals > 0)
-      binding.pry
       all_shots.to_f / all_goals
     else
       0.00
     end
   end
-  #
-  # def all_goals_season(team_id, season)
-  #
-  #   all_goals = 0
-  #   self.game_teams.each do |game|
-  #     if (game.team_id.to_s == team_id) && (season_for_game(game.game_id) == season)
-  #       all_goals += game.goals
-  #     end
-  #   end
-  #   all_goals
-  # end
-
-
-  def season_for_game(game_id)
-    x = self.games.find {|k, _| k == game_id}
-    x[1].season
-  end
-
-  # def season_shots_ratio(team_id, season)
-  #   binding.pry
-  #   if (all_shots_season(team_id, season)[0] > 0) && (all_shots_season(team_id, season)[1] > 0)
-  #     binding.pry
-  #     (all_shots_season(team_id, season)[0].to_f / all_shots_season(team_id, season)[1])
-  #   else
-  #     0.00
-  #   end
-  # end
-
 
 end
