@@ -1,10 +1,9 @@
 module Leagueable
-
-  def count_of_teams # BB (Complete)
+  def count_of_teams # BB 
     self.teams.length
   end
 
-  def highest_scoring_visitor # AM (complete)
+  def highest_scoring_visitor # AM
     away_goals = Hash.new(0.00)
     unique_away_teams_array_helper.each do |team_id|
       self.games.each_value do |game|
@@ -20,7 +19,7 @@ module Leagueable
     team_name_finder_helper(highest_avg_hash[0])
   end
 
-  def highest_scoring_home_team # AM (complete)
+  def highest_scoring_home_team # AM
     home_goals = Hash.new(0.00)
     unique_home_teams_array_helper.each do |team_id| #get sum of away_goals per home team (hash output)
       self.games.each_value do |game|
@@ -36,7 +35,7 @@ module Leagueable
     team_name_finder_helper(highest_avg_hash[0])
   end
 
-  def lowest_scoring_visitor # AM (complete)
+  def lowest_scoring_visitor # AM
     away_goals = Hash.new(0.00)
     unique_away_teams_array_helper.each do |team_id| #get sum of away_goals per away team (hash output)
       self.games.each_value do |game|
@@ -52,7 +51,7 @@ module Leagueable
     team_name_finder_helper(lowest_avg_hash[0])
   end
 
-  def lowest_scoring_home_team # AM (complete)
+  def lowest_scoring_home_team # AM
     home_goals = Hash.new(0.00)
     unique_home_teams_array_helper.each do |team_id| #get sum of away_goals per home team (hash output)
       self.games.each_value do |game|
@@ -68,12 +67,10 @@ module Leagueable
     team_name_finder_helper(lowest_avg_hash[0])
   end
 
-  def winningest_team # BB (Complete)
+  def winningest_team # BB
     winningest_team_wins_average = 0
     winningest_team_team_id = 0
     this_team_wins_average = 0
-    # Iterate over teams_total_games key/value pairs.
-    # games_key is the team_id and games_value is the number of games played
     total_games_helper.each do |games_key, games_value|
       total_wins_helper.each do |wins_key, wins_value|   # Nest an iteration over teams_total_wins key/value pairs. wins_key is the team_id and wins_value is the number of games won
         if wins_key == games_key
@@ -89,7 +86,6 @@ module Leagueable
   end
 
   def best_fans # BB (Complete)
-
     teams_away_win_percentage = Hash.new # Create hash with team ids as keys and the total home and away win % for each team as values
     teams_home_win_percentage = Hash.new
     self.teams.each_key do |team_id|
