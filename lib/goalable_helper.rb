@@ -61,4 +61,30 @@ module GoalableHelper
     teams_total_goals_visitor
   end
 
+  def all_shots_season(team_id, season)
+
+  all_shots = 0
+  all_goals = 0
+    self.games.each_value do |game|
+      if (game.season == season) && ((game.home_team_id == team_id) || (game.away_team_id == team_id))
+          row = self.game_teams.select do |game_team|
+            ((game_team.game_id == game.game_id) &&
+            (game_team.team_id.to_s == team_id))
+          end
+          if row[0] != nil
+            all_shots += row[0].shots
+            all_goals += row[0].goals
+          end
+      end
+    end
+
+  [all_shots, all_goals]
+
+  if (all_shots > 0) && (all_goals > 0)
+    all_shots.to_f / all_goals
+  else
+    0.00
+  end
+end
+
 end
