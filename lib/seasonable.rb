@@ -96,21 +96,29 @@ module Seasonable
     worst_coach
   end
 
-  # Name of the Team with the best ratio of shots to goals for the season. Return:	String
-  # AM
-  def most_accurate_team(season)
-    # code goes here!
+
+  def most_accurate_team(season)   # AM
+    agg_data = Hash.new(0)
+    self.teams.each_pair do |team_id, _|
+      agg_data[team_id] = all_shots_season(team_id, season)
+    end
+
+    agg_data.delete_if do |_, v|
+      v == 0
+    end
+  team_name_finder_helper(agg_data.min_by {|_, v| v if v > 0}[0])
   end
 
-  # Name of the Team with the worst ratio of shots to goals for the season. Return:	String
-  # AM
-  def least_accurate_team(season)
-    # code goes here!
+
+  def least_accurate_team(season)   # AM
+    agg_data = Hash.new(0)
+  self.teams.each_pair do |team_id, _|
+    agg_data[team_id] = all_shots_season(team_id, season)
+  end
+team_name_finder_helper(agg_data.max_by {|_, v| v}[0])
   end
 
-  # Name of the Team with the most tackles in the season. Return:	String
-  # JP
-  def most_tackles(season)
+  def most_tackles(season)   # JP
     total_tackles = tackles_helper(season)
     most_tackles = 0
     best_team = 0
@@ -124,9 +132,7 @@ module Seasonable
     team_name_finder_helper(best_team.to_s)
   end
 
-  # Name of the Team with the fewest tackles in the season. Return:	String
-  # JP
-  def fewest_tackles(season)
+  def fewest_tackles(season)   # JP
     total_tackles = tackles_helper(season)
     least_tackles = 10000
     worst_team = 0
