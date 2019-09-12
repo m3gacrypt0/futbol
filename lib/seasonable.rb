@@ -113,7 +113,15 @@ module Seasonable
   # Name of the Team with the best ratio of shots to goals for the season. Return:	String
   # AM
   def most_accurate_team(season)
-    # code goes here!
+
+    agg_data = Hash.new(0)
+
+    # require 'pry' ; binding.pry
+      self.teams.each_pair do |team_id, _|
+        agg_data[team_id] = all_shots_season(team_id, season)
+      end
+    # binding.pry
+    team_name_finder_helper(agg_data.max_by {|_, v| v}[0])
   end
 
   # Name of the Team with the worst ratio of shots to goals for the season. Return:	String
@@ -204,14 +212,72 @@ module Seasonable
     shortened_season.to_i
   end
 
-  def shots_helper(season) #ALL Teams. Hash. Key = Team_id, Value = shots
+  def all_shots_season(team_id, season)
 
+    all_shots = 0
+    all_goals = 0
+    game_array = []
+
+    self.games.each_value do |game|
+      if (game.season == season) && ((game.home_team_id == team_id) || (game.away_team_id == team_id))
+        game_array << game
+      end
+    end
+
+    # game_array = game_array.uniq
+# binding.pry
+    game_array.each do |game|
+      # binding.pry
+      row = self.game_teams.find_all do |game_team|
+        (game_team.game_id == game.game_id)# && (game_team.team_id == team_id))
+      end
+      row = row.find {|game_team| game_team.team_id == team_id}
+
+        # binding.pry
+      # end
+      # binding.pry
+      if row != nil
+        require 'pry'; binding.pry
+        all_shots += row[0].shots
+        all_goals += row[0].goals
+      end
+    end
+    [all_shots, all_goals]
+
+    if (all_shots > 0) && (all_goals > 0)
+      binding.pry
+      all_shots.to_f / all_goals
+    else
+      0.00
+    end
+  end
+  #
+  # def all_goals_season(team_id, season)
+  #
+  #   all_goals = 0
+  #   self.game_teams.each do |game|
+  #     if (game.team_id.to_s == team_id) && (season_for_game(game.game_id) == season)
+  #       all_goals += game.goals
+  #     end
+  #   end
+  #   all_goals
+  # end
+
+
+  def season_for_game(game_id)
+    x = self.games.find {|k, _| k == game_id}
+    x[1].season
   end
 
-  def goals_helper(season) #ALL Teams. Hash. Key = Team_id, Value = goals
-  end
+  # def season_shots_ratio(team_id, season)
+  #   binding.pry
+  #   if (all_shots_season(team_id, season)[0] > 0) && (all_shots_season(team_id, season)[1] > 0)
+  #     binding.pry
+  #     (all_shots_season(team_id, season)[0].to_f / all_shots_season(team_id, season)[1])
+  #   else
+  #     0.00
+  #   end
+  # end
 
-  def tackles_helper(season) #ALL Teams. Hash. Key = Team_id, Value = tackles
-  end
 
 end
