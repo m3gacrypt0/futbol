@@ -141,7 +141,7 @@ module Leagueable
 
   def worst_fans # BB (Complete)
     worst_fans_collection = []
-    total_away_wins_helper.each do |team_id_1, number_of_away_wins   # Iterate through the hashes and if a team has more away wins than home wins then they get added to the worst_fans_collection array
+    total_away_wins_helper.each do |team_id_1, number_of_away_wins|   # Iterate through the hashes and if a team has more away wins than home wins then they get added to the worst_fans_collection array
       total_home_wins_helper.each do |team_id_2, number_of_home_wins|
         if team_id_1 == team_id_2
           if number_of_away_wins > number_of_home_wins
