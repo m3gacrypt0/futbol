@@ -45,14 +45,12 @@ class SeasonableTest < Minitest::Test
 
   #AM
   def test_most_accurate_team
-    skip
     assert_equal "Real Salt Lake", @stat_tracker.most_accurate_team("20132014")
     assert_equal "Toronto FC", @stat_tracker.most_accurate_team("20142015")
   end
 
   #AM
   def test_least_accurate_team
-    skip
     assert_equal "New York City FC", @stat_tracker.least_accurate_team("20132014")
     assert_equal "Columbus Crew SC", @stat_tracker.least_accurate_team("20142015")
   end

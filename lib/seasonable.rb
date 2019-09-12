@@ -1,7 +1,6 @@
-require 'pry'
 module Seasonable
 
-  def biggest_bust(season) # BB (Complete)
+  def biggest_bust(season) # BB
     teams_reg_season_win_percentage = Hash.new(0)
     teams_post_season_win_percentage = Hash.new(0)
     teams_differences = Hash.new(0)
@@ -14,7 +13,7 @@ module Seasonable
       teams_differences[game.away_team_id] += 0
     end
     teams_reg_season_win_percentage.each do |team_id, percent|
-      teams_reg_season_win_percentage[team_id] = season_type_win_percentage_helper(team_id, season, type = "Regular Season")
+      teams_reg_season_win_percentage[team_id] = season_type_win_percentage_helper(team_id, season, "Regular Season")
     end
     teams_post_season_win_percentage.each do |team_id, percent|
       teams_post_season_win_percentage[team_id] = season_type_win_percentage_helper(team_id, season, type = "Postseason")
@@ -32,7 +31,7 @@ module Seasonable
     team_name_finder_helper(team_with_biggest_diff[0])
   end
 
-  def biggest_surprise(season) # BB (Complete)
+  def biggest_surprise(season) # BB
     teams_reg_season_win_percentage = Hash.new(0)
     teams_post_season_win_percentage = Hash.new(0)
     teams_differences = Hash.new(0)
@@ -63,7 +62,7 @@ module Seasonable
     team_name_finder_helper(team_with_lowest_diff[0])
   end
 
-  def winningest_coach(season) # JP (complete)
+  def winningest_coach(season) # JP
     coach_win_percentage_hash = coach_win_percentage_helper(season)
     best_win_percentage = 0.0
     best_coach = ""
@@ -76,7 +75,7 @@ module Seasonable
     best_coach
   end
 
-  def worst_coach(season) # JP (complete)
+  def worst_coach(season)   # JP
     coach_win_percentage_hash = coach_win_percentage_helper(season)
     worst_win_percentage = 2.0
     worst_coach = ""
@@ -89,21 +88,27 @@ module Seasonable
     worst_coach
   end
 
-  # Name of the Team with the best ratio of shots to goals for the season. Return:	String
-  # AM
-  def most_accurate_team(season)
-    # code goes here!
+  def most_accurate_team(season) # AM
+    agg_data = Hash.new(0)
+      self.teams.each_pair do |team_id, _|
+        agg_data[team_id] = all_shots_season(team_id, season)
+      end
+
+      agg_data.delete_if do |_, v|
+        v == 0
+      end
+    team_name_finder_helper(agg_data.min_by {|_, v| v if v > 0}[0])
   end
 
-  # Name of the Team with the worst ratio of shots to goals for the season. Return:	String
-  # AM
-  def least_accurate_team(season)
-    # code goes here!
+  def least_accurate_team(season) # AM
+        agg_data = Hash.new(0)
+          self.teams.each_pair do |team_id, _|
+            agg_data[team_id] = all_shots_season(team_id, season)
+          end
+        team_name_finder_helper(agg_data.max_by {|_, v| v}[0])
   end
 
-  # Name of the Team with the most tackles in the season. Return:	String
-  # JP
-  def most_tackles(season)
+  def most_tackles(season) # JP
     total_tackles = tackles_helper(season)
     most_tackles = 0
     best_team = 0
@@ -117,8 +122,7 @@ module Seasonable
     team_name_finder_helper(best_team.to_s)
   end
 
-  # JP
-  def fewest_tackles(season)
+  def fewest_tackles(season)   # JP
     total_tackles = tackles_helper(season)
     least_tackles = 10000
     worst_team = 0
@@ -130,5 +134,4 @@ module Seasonable
     end
     team_name_finder_helper(worst_team.to_s)
   end
-
 end
