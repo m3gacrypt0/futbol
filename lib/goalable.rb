@@ -1,9 +1,7 @@
 module Goalable
 
   ### From Leagueable ###
-
-  # JP (Complete)
-  def best_offense
+  def best_offense # JP
     teams_total_goals = total_goals_helper
     teams_total_games = total_games_helper
 
@@ -33,8 +31,7 @@ module Goalable
     team_with_best_offense
   end
 
-  # JP (Complete)
-  def worst_offense
+  def worst_offense # JP
     teams_total_goals = total_goals_helper
     teams_total_games = total_games_helper
 
@@ -63,8 +60,7 @@ module Goalable
     team_with_worst_offense
   end
 
-  # JP (Complete)
-  def best_defense
+  def best_defense # JP
     teams_total_goals_allowed = total_goals_allowed_helper
     teams_total_games = total_games_helper
 
@@ -93,8 +89,7 @@ module Goalable
     team_with_best_defense
   end
 
-  # JP (Complete)
-  def worst_defense
+  def worst_defense # JP
     teams_total_goals_allowed = total_goals_allowed_helper
     teams_total_games = total_games_helper
 
@@ -120,11 +115,7 @@ module Goalable
   end
 
   ### From Teamable ###
-
-  
-
-  #BB (Complete)
-  def most_goals_scored(team_id)
+  def most_goals_scored(team_id) #BB
     most_goals_scored_counter = 0
     int_team_id = team_id.to_i
     self.game_teams.each do |game_team_obj|
@@ -137,8 +128,7 @@ module Goalable
     most_goals_scored_counter
   end
 
-  #BB (Complete)
-  def fewest_goals_scored(team_id)
+  def fewest_goals_scored(team_id) #BB
     fewest_goals_scored_counter = 100
     int_team_id = team_id.to_i
     self.game_teams.each do |game_team_obj|

@@ -10,12 +10,10 @@ module SeasonableHelper
             else
               false
             end
-
           end
         end.length.to_f
 
       if total_wins > 0
-
         teams_total_games = 0
         self.games.each_value do |game|
           if (game.season == season) && (game.type == type)
@@ -23,9 +21,7 @@ module SeasonableHelper
             teams_total_games += 1 if game.home_team_id == team_id
           end
         end
-
         (total_wins / teams_total_games)
-
       else
         0.00
       end
@@ -39,7 +35,6 @@ module SeasonableHelper
           teams_total_goals_scored += game.home_goals if game.home_team_id == team_id
         end
       end
-
       teams_total_goals_scored
     end
 
@@ -51,7 +46,6 @@ module SeasonableHelper
           teams_total_goals_against += game.away_goals if game.home_team_id == team_id
         end
       end
-
       teams_total_goals_against
     end
 
@@ -62,7 +56,6 @@ module SeasonableHelper
             teams_total_games += 1 if (game.away_team_id == team_id) || (game.home_team_id == team_id)
           end
         end
-
       teams_total_games
     end
 
@@ -99,7 +92,7 @@ module SeasonableHelper
             if game_obj.result == "WIN"
               win_game_hash[:wins] += 1
               win_game_hash[:games] += 1
-            elsif game_obj.result == "LOSS" #|| game_obj.result == "TIE"
+            elsif game_obj.result == "LOSS"
               win_game_hash[:games] += 1
             elsif game_obj.result == "TIE"
               win_game_hash[:games] += 1
@@ -113,11 +106,9 @@ module SeasonableHelper
         win_percentage = ((win_games[:wins]) / (win_games[:games]).to_f).round(2)
         coach_win_percentage_hash[coach] = win_percentage
       end
-
       coach_win_percentage_hash.delete_if do |coach, win_percentage|
         win_percentage.nan?
       end
-
       coach_win_percentage_hash
     end
 
@@ -133,12 +124,6 @@ module SeasonableHelper
       #convert full season to first 4 characters
       shortened_season = season[0..3]
       shortened_season.to_i
-    end
-
-    def shots_helper(season) #ALL Teams. Hash. Key = Team_id, Value = shots
-    end
-
-    def goals_helper(season) #ALL Teams. Hash. Key = Team_id, Value = goals
     end
 
     def tackles_helper(season) #ALL Teams. Hash. Key = Team_id, Value = tackles
