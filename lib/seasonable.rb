@@ -16,7 +16,7 @@ module Seasonable
     end
 
     teams_reg_season_win_percentage.each do |team_id, percent|
-      teams_reg_season_win_percentage[team_id] = season_type_win_percentage_helper(team_id, season, type = "Regular Season")
+      teams_reg_season_win_percentage[team_id] = season_type_win_percentage_helper(team_id, season, "Regular Season")
     end
 
     teams_post_season_win_percentage.each do |team_id, percent|
